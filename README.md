@@ -1,0 +1,2 @@
+# pico_MicroPython_misakifont
+Raspberry Pi Pico MicroPython用美咲フォント利用モジュール
