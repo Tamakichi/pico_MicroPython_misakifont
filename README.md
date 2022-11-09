@@ -16,7 +16,7 @@ Raspberry Pi Pico MicroPython用の美咲フォントライブラリです。
 
 ## 仕様
 
-* 文字コード  UTF16/UTF-8  
+* 文字コード  UTF16  
 * フォントサイズ  8x8ドッド（美咲フォント)  
 * フォント格納形式  
 ![format](img/fontFormat.png)
