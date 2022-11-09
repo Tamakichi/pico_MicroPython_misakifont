@@ -3,7 +3,7 @@ Raspberry Pi Pico MicroPython用美咲フォント利用モジュール
 
 ## 概要
 
-Raspberry Pi Pico MicroPython用の美咲フォントドライバライブラリです。  
+Raspberry Pi Pico MicroPython用の美咲フォントライブラリです。  
 フラッシュメモリ消費を抑えるため、フォントを  
 教育漢字1,006字(小学校で習う漢字）＋ひらがな・カタカナ・記号・半角等の1,710字に絞っています。  
 
