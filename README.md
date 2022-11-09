@@ -25,4 +25,13 @@ Raspberry Pi Pico MicroPython用の美咲フォントドライバライブラリ
   * 漢字 教育漢字 1,006字(小学校で習う漢字）  
   * 非漢字 全角 546字(全角英数字、ひらがな、かたかな、記号)  
   * 半角フォント  158字(半角記号、半角英数、半角カタカナ）  
-  
+
+## 配布ファイル
+* /src  
+  * misakifont.py　　　　　　　　　美咲フォントクラスモジュール  
+  * misakifontdata.py　　　　　　　美咲フォントデータ  
+  * sample_misaki.py　　　　　　　 サンプル1（コンソール上にフォントデータを表示）  
+  * sample_misaki_neopixel.py　　　サンプル2（8x8ドットNeopixcelにフォント表示）  
+  * neomatrix.py　　　　　　　　　 サンプル2用 NeoPixcel利用モジュール  
+* README.txt  
+* /img  
