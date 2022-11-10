@@ -199,3 +199,5 @@ while True:
     time.sleep_ms(1000)
     np.cls()
 ````
+実行結果  
+![sample2](img/sample2.jpg) 
