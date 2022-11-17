@@ -2,28 +2,39 @@ from machine import Pin
 from neopixel import NeoPixel
 import time
 
+"""NeoPixel マトリック表示表示ドライバー"""
 class NeoMatrix:
+    width  = 8
+    height = 8
+    
     # コンストラクタ
-    def __init__(self, pin):
+    def __init__(self, pin, w=8, h=8):
+        self.width = w
+        self.height = h        
         self.pin = Pin(pin, Pin.OUT) 
-        self.np  = NeoPixel(self.pin, 64)
+        self.np  = NeoPixel(self.pin, self.width*self.height)
 
     # 8x8ドットマトリックス 指定座標ピクセル番号変換
     def XYtoNo(self, x, y):
-        if y&1:
-            no = 8*y + x
-        else:
-            no = 8*y + 7 -x
-        return no
+        return self.width*y + x if y&1 else self.width*y + self.width-1 -x
 
+    # 表示更新
     def update(self):
         self.np.write()
-        
+
+    # 表示クリア
     def cls(self,flgUpdate=False):
         self.np.fill((0,0,0))
         if flgUpdate:
             self.np.write()
-    
+
+    # 点の描画
+    def pixcel(self,x,y,color,flgUpdate=False):
+        self.np[self.XYtoNo(x,y)] = color
+        if flgUpdate:
+            self.np.write()   
+ 
+     # 全領域塗りつぶし
     def fill(self,color,flgUpdate=False):
         self.np.fill(color)
         if flgUpdate:
@@ -31,8 +42,8 @@ class NeoMatrix:
 
     # 単色8x8ビットマップの配置
     def putBitmap(self, bmp, fg, bg, flgUpdate=False):
-        for y in range(0,7):
-            for x in range(0,7):
+        for y in range(0,self.height-1):
+            for x in range(0,self.width-1):
                 if (0x80>>x) & bmp[y]:
                     self.np[XYtoNo(x,y)] = fg
                 else:
@@ -42,26 +53,23 @@ class NeoMatrix:
 
     # ドットマトリックス 左スクロール
     def scroll(self, flgUpdate=False):
-        for i in range(0,8):
-            if i&1: # 奇数列
-                for j in range(0,7):
-                    self.np[i*8+j]=self.np[i*8+j+1]                
-            else:   # 偶数列   
-                for j in range(1,8):
-                    self.np[i*8+8-j]=self.np[i*8+8-j-1]
+        for y in range(self.height):
+            for x in range(1,self.width):
+                self.np[self.XYtoNo(x-1,y)] = self.np[self.XYtoNo(x,y)]
+            self.np[self.XYtoNo(self.width-1,y)]  = [0,0,0]
         if flgUpdate:
             self.np.write()
 
     # 1文字左スクロール挿入
-    def scrollIn(self, fnt, color, tm):
-        for i in range(0,8):
+    def scrollIn(self, fnt, color, tm, ypos=0, fw=8, fh=8):
+        for i in range(0,fh):
             self.scroll()
             # フォントパターン1列分のセット
-            for j in range(0,8):
+            for j in range(0,fw):
               if (fnt[j] & (0x80 >> i)):
-                 self.np[self.XYtoNo(7,j)] = color
+                 self.np[self.XYtoNo(self.width-1,j+ypos)] = color
               else:
-                 self.np[self.XYtoNo(7,j)] = (0, 0, 0)        
+                 self.np[self.XYtoNo(self.width-1,j+ypos)] = (0, 0, 0)        
             self.np.write()
             time.sleep_ms(tm)
 
