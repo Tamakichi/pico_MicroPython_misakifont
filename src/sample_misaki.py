@@ -14,7 +14,7 @@ def show_bitmap(fd):
         print()
 
 
-str="こんにちは世界！"
+str="123 こんにちは世界！"
 mf = MisakiFont()
 for c in str:
     d = mf.font(ord(c))
