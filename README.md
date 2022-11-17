@@ -32,6 +32,7 @@ Raspberry Pi Pico MicroPython用の美咲フォントライブラリです。
   * misakifontdata.py　　　　　　　美咲フォントデータ  
   * sample_misaki.py　　　　　　　 サンプル1（コンソール上にフォントデータを表示）  
   * sample_misaki_neopixel.py　　　サンプル2（8x8ドットNeopixcelにフォント表示）  
+  * sample_han2zen.py　　　　　　 サンプル3 （半角全角変換テスト）
   * neomatrix.py　　　　　　　　　 サンプル2用 NeoPixcel利用モジュール  
 * README.txt  
 * /img  
