@@ -1,4 +1,5 @@
 from misakifontdata import misaki_font_data, misaki_font_table, kana_h2z_map
+from tma_jp_utl import isHkana, hkana2kana, han2zen, binfind
 
 class MisakiFont:
     FTABLESIZE =   len(misaki_font_table)     # フォントテーブルデータサイズ
@@ -13,62 +14,24 @@ class MisakiFont:
     #  戻り値 該当フォントがある場合 フォントコード(0～FTABLESIZE-1)
     #        該当フォントが無い場合 -1
     def find(self, ucode):
-        t_p = 0;                 #　検索範囲上限
-        e_p = self.FTABLESIZE-1  #  検索範囲下限
-        flg_stop = 0
-        d = None
-        
-        while(True):
-            pos = t_p + ((e_p - t_p+1)>>1)
-            d = misaki_font_table[pos]
-            if d == ucode:      # 等しい
-                flg_stop = 1    
-                break
-            elif ucode > d:     # 大きい
-                t_p = pos + 1   
-                if t_p > e_p:
-                    break
-            else:               # 小さい
-                e_p = pos -1
-                if e_p < t_p:
-                    break
-        if not flg_stop:
-            return -1
-        return pos
+        return binfind(ucode, len(misaki_font_table), lambda pos:misaki_font_table[pos] )
 
     # 半角カナ文字判定
     #  引数   ucode UTF-16 コード
     def isHkana(self, ucode):
-        return (ucode >=0xFF61) and (ucode <= 0xFF9F)
+        return isHkana(ucode)
 
     # 半角カナ全角文字変換
     #  引数   ucode UTF-16 コード
     def hkana2kana(self, ucode):
-        if (self.isHkana(ucode)):
-            return kana_h2z_map[ucode - 0xFF61] + 0x3000
-        return ucode
+        return hkana2kana(ucode)
 
     # UTF16半角文字コードをUTF16全角文字コードに変換する
     # (変換できない場合は元のコードを返す)
     #  引数   ucode UTF-16 コード
     #  戻り値: 変換コード
     def han2zen(self, ucode):
-        ucode = self.hkana2kana(ucode)
-
-        if ucode > 0xff or ucode < 0x20: 
-            return ucode
-        if ucode in (0x5C,0xA2,0xA3,0xA7,0xA8,0xAC,0xB0,0xB1,0xB4,0xB6,0xD7,0xF7):
-            return ucode
-        else:
-            c = { 
-                0x20:0x3000, 0x21:0xFF01, 0x22:0x201D, 0x23:0xFF03, 0x24:0xFF04, 
-                0x25:0xFF05, 0x26:0xFF06, 0x27:0x2019, 0x28:0xFF08, 0x29:0xFF09,
-                0x2A:0xFF0A, 0x2B:0xFF0B, 0x2C:0xFF0C, 0x2D:0x2212, 0x2E:0xFF0E,       
-            }.get(ucode)
-            
-            if c != None:
-                return c
-        return  ucode - 0x2F +  0xFF0F     
+        return han2zen(ucode)
 
     #  UTF16文字コードに対応する美咲フォントデータ8バイトを取得する
     #  引数   ucode UTF-16 コード
