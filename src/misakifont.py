@@ -7,7 +7,7 @@ class MisakiFont:
     FONT_TOFU  =   0x25a1                     # 豆腐"□"コード
 
     def __init__(self):
-        None
+        pass
 
     #  フォントコード検索
     #  引数   ucode UTF-16 コード
