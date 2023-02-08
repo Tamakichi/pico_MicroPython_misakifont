@@ -85,7 +85,7 @@ flgz: 半角⇒全角変換指定（True:全角変換する、False:全角変換
 該当フォントがない場合は、豆腐("□")のフォントデータを返す
 
 【説明】  
-引数ucodeで指定した文字コードに対応するフォントデータを8バイトをタプル形式で返します。 
+引数ucodeで指定した文字コードに対応するフォントデータを8バイトをタプル形式で返します。  
 指定したコードに対応するフォントデータがない場合は、豆腐("□")を返します。
 
 【利用例】  
@@ -159,12 +159,8 @@ from misakifont import MisakiFont
 """
 def show_bitmap(fd):
     for row in range(0,7):
-        #print(bin(fd[row])+" ",end="")
         for col in range(0,7):
-            if (0x80>>col) & fd[row]:
-                print("#",end="")
-            else:
-                print(" ",end="")
+            print("#" if (0x80>>col) & fd[row] else " ", end="")
         print()
 
 
@@ -182,7 +178,7 @@ for c in str:
 ## ライブラリ利用例②
 
 NeoPixcel 8x8ドットマトリックスに文字を表示するサンプルプログラムです。  
-ドットマトリックスを制御するためには、配布ファイルのdeviceディレクトリをフラッシュメモリ上に配置して下さい。  
+ドットマトリックスを制御用に配布ファイルのdeviceディレクトリをフラッシュメモリ上に配置して下さい。  
 NeoPixcelのデータ送信にはGP26ピンを使用しています。適宜変更してご利用下さい。  
 
 ````sample_misaki_neopixel.py
