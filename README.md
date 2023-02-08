@@ -1,4 +1,5 @@
 # pico_MicroPython_misakifont
+
 Raspberry Pi Pico MicroPython用美咲フォントライブラリ
 
 ## 概要
@@ -27,6 +28,23 @@ Raspberry Pi Pico MicroPython用の美咲フォントライブラリです。
   * 半角フォント  158字(半角記号、半角英数、半角カタカナ）  
 
 ## 配布ファイル
+
+````tree
+./
+│  README.md                  [このドキュメント]
+│  sample_han2zen.py          [サンプル3 （半角全角変換テスト）]
+│  sample_misaki.py           [サンプル1（コンソール上にフォントデータを表示）]
+│  sample_misaki_neopixel.py  [サンプル2用 NeoPixcel利用モジュール]
+├─ device/
+│      neomatrix.py           [サンプル2用 NeoPixcel利用モジュール]
+├─ img/                       [このドキュメントの画像ファイル]
+└─ misakifont/                [美咲フォントパッケージ]
+        misakifont.py         [美咲フォントクラスモジュール]
+        misakifontdata.py     [美咲フォントデータ]
+        tma_jp_utl.py         [サブルーチン]
+        __init__.py
+````
+
 * /src  
   * misakifont.py　　　　　　　　　美咲フォントクラスモジュール  
   * misakifontdata.py　　　　　　　美咲フォントデータ  
@@ -38,8 +56,8 @@ Raspberry Pi Pico MicroPython用の美咲フォントライブラリです。
 * /img  
 
 ## インストールおよびモジュールのインポート
-* misakifont.py、misakifontdata.pyをRaspberry Pi Pico MicroPythonの
-  フラッシュメモリに配置します。
+
+* ディレクトリmisakifontをRaspberry Pi Picoのフラッシュメモリに配置します。
 * ライブラリをインポートします。  
 from misakifont import MisakiFont
 
@@ -49,7 +67,8 @@ from misakifont import MisakiFont
 
 MisakiFontは指定した文字コード（UTF16)に対応するフォントデータを取得するためのクラスです。
 
-#### コンストラクタ  
+#### コンストラクタ
+
 【書式】  
 class MisakiFont()  
 
@@ -61,7 +80,8 @@ mf=MisakiFont()
 
 #### メソッド  
 
-##### font(ucode,flgz=True)  
+##### font(ucode,flgz=True)
+
 フォントデータの取得  
 
 【引数】  
@@ -80,7 +100,8 @@ flgz: 半角⇒全角変換指定（True:全角変換する、False:全角変換
 mf=MisakiFont()
 d = mf.font(ord("あ"))
 
-##### isHkana(ucode)  
+##### isHkana(ucode)
+
 半角カタカナ判定  
 
 【引数】  
@@ -93,7 +114,8 @@ False：指定した文字は半角カタカナではない
 【説明】  
 指定した文字コードが半角カタカナであるか判定します。
 
-##### hkana2kana(ucode)  
+##### hkana2kana(ucode)
+
 半角カタカナ⇒全角カタカナ変換  
 
 【引数】  
@@ -103,10 +125,11 @@ ucode：文字コード
 変換した文字コードを返す
 
 【説明】  
-指定した文字コードが半角カタカナの場合、対応する全角カタカナ文字コードを返します。   
+指定した文字コードが半角カタカナの場合、対応する全角カタカナ文字コードを返します。  
 半角カタカナでない場合は、そのまま返します。  
 
-##### han2zen(ucode) 
+##### han2zen(ucode)
+
 半角⇒全角変換  
 
 【引数】  
@@ -119,8 +142,9 @@ ucode：文字コード
 指定した文字コードが半角文字(記号、英数字、カタカナ）の場合、対応する全角文字コードを返します。  
 半角文字でない場合は、そのまま返します。  
 
-##### find(ucode)  
-文字コードの検索 
+##### find(ucode)
+
+文字コードの検索  
 
 【引数】  
 ucode：文字コード
@@ -133,7 +157,8 @@ ucode：文字コード
 文字コードに対応するフォントデータが存在するかをチェックします。  
 フォントデータが存在しない場合は、-1を返します。
 
-## ライブラリ利用例①  
+## ライブラリ利用例①
+
 ````sample_misaki.py
 from misakifont import MisakiFont
 
@@ -160,23 +185,26 @@ for c in str:
 ````
 
 実行結果  
-![sample1](img/sample1.png) 
+![sample1](img/sample1.png)  
 
+## ライブラリ利用例②
 
-## ライブラリ利用例②  
+NeoPixcel 8x8ドットマトリックスに文字を表示するサンプルプログラムです。  
+ドットマトリックスを制御するためには、配布ファイルのdeviceディレクトリをフラッシュメモリ上に配置して下さい。  
+NeoPixcelのデータ送信にはGP26ピンを使用しています。適宜変更してご利用下さい。  
+
 ````sample_misaki_neopixel.py
 """
 Neopixel 8x8ドットマトリックス 美咲フォント表示デモ
 
 """
+from time import sleep_ms
+from random import randint
 from misakifont import MisakiFont
-from machine import Pin
-from neopixel import NeoPixel
-import time
-import random
-from neomatrix import NeoMatrix
+from device.neomatrix import NeoMatrix
 
 pin = 26
+maxBright = 20
 
 str="こんにちは世界！"
 np = NeoMatrix(pin)
@@ -186,19 +214,20 @@ np.cls()
 while True:
     #矩形の表示
     for i in range(5):
-        color = (random.randint(0, 50),random.randint(0, 50),random.randint(0, 50))
-        for j in range(0,4):
+        color = [randint(0, maxBright) for n in range(3)]
+        for j in range(0, 4):
             np.cls(False)
-            np.line(j,j,7-j,7-j,color,1)
-            time.sleep_ms(150)
+            np.line(j, j, 7-j, 7-j, color, 1)
+            sleep_ms(150)
 
     #文字のスクロール表示
     for c in str:
         d = mf.font(ord(c))
-        color = (random.randint(0, 50),random.randint(0, 50),random.randint(0, 50))
-        np.scrollIn(d,color,100)
-    time.sleep_ms(1000)
+        color = [randint(0, maxBright) for n in range(3)]
+        np.scrollIn(d, color,100)
+    sleep_ms(1000)
     np.cls()
 ````
+
 実行結果  
-![sample2](img/sample2.jpg) 
+![sample2](img/sample2.jpg)  
