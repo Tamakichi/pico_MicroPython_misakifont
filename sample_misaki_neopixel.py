@@ -8,9 +8,9 @@ from misakifont import MisakiFont
 from device.neomatrix import NeoMatrix
 
 pin = 26
-maxBright = 20
+maxBright = 15
 
-str="こんにちは世界！"
+str="12abcこんにちは,世界! ｺﾝﾆﾁﾊｾｶｲ!"
 np = NeoMatrix(pin)
 mf = MisakiFont()
 np.cls()
@@ -26,8 +26,8 @@ while True:
 
     #文字のスクロール表示
     for c in str:
-        d = mf.font(ord(c))
+        d = mf.font(ord(c),False)
         color = [randint(0, maxBright) for n in range(3)]
-        np.scrollIn(d, color,100)
+        np.scrollIn(d, color,100, fw = 8 if mf.isZenkaku(ord(c)) else 4)
     sleep_ms(1000)
     np.cls()

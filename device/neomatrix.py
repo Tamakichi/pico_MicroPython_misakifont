@@ -4,8 +4,6 @@ from neopixel import NeoPixel
 import time
 
 class NeoMatrix:
-    width  = 8
-    height = 8
     
     # コンストラクタ
     def __init__(self, pin, w=8, h=8):
@@ -59,9 +57,9 @@ class NeoMatrix:
 
     # 1文字左スクロール挿入
     def scrollIn(self, fnt, color, tm, ypos=0, fw=8, fh=8):
-        for i in range(0,fh):
+        for i in range(0,fw):
             self.scroll()
-            for j in range(0,fw): # フォントパターン1列分のセット
+            for j in range(0,fh): # フォントパターン1列分のセット
                 self.np[self.XYtoNo(self.width-1,j+ypos)] = color if fnt[j] & (0x80 >> i) else (0, 0, 0)
             self.np.write()
             time.sleep_ms(tm)

@@ -1,5 +1,5 @@
-from .misakifontdata import misaki_font_data, misaki_font_table, kana_h2z_map
-from .tma_jp_utl import isHkana, hkana2kana, han2zen, binfind
+from .misakifontdata import misaki_font_data, misaki_font_table
+from .tma_jp_utl import isHkana, hkana2kana, han2zen, isZenkaku, binfind
 
 class MisakiFont:
     FTABLESIZE =   len(misaki_font_table)     # フォントテーブルデータサイズ
@@ -26,6 +26,12 @@ class MisakiFont:
     def hkana2kana(self, ucode):
         return hkana2kana(ucode)
 
+    # 全角・半角判定
+    # 引数   ucode UTF-16 コード
+    # 戻り値: 半角幅 False、全角幅 True
+    def isZenkaku(self, ucode):
+        return isZenkaku(ucode)
+    
     # UTF16半角文字コードをUTF16全角文字コードに変換する
     # (変換できない場合は元のコードを返す)
     #  引数   ucode UTF-16 コード
@@ -35,6 +41,7 @@ class MisakiFont:
 
     #  UTF16文字コードに対応する美咲フォントデータ8バイトを取得する
     #  引数   ucode UTF-16 コード
+    #         flgz  True 半角を全角に変換する, False 変換しない
     #  戻り値: 正常終了 取得したデータ(トプル) 、異常終了 None
     def font(self,utf16,flgz=True):
         if flgz:
