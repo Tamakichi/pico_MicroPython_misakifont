@@ -142,7 +142,7 @@ flgz: 半角⇒全角変換指定（True:全角変換する、False:全角変換
 指定したコードに対応するフォントデータがない場合は、豆腐("□")を返します。
 
 【利用例】  
-mf=MisakiFont()
+mf=MisakiFont()  
 d = mf.font(ord("あ"))
 
 ##### isHkana(ucode)
